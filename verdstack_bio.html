@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verdstack — AI Productivity for STEM Students</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-primary: #163832;
+    --brand-light:   #8EB69B;
+    --brand-dark:    #0B2B26;
+    --light-bg:      #F2F7F4;
+    --light-border:  #DDE8E2;
+    --gradient:      linear-gradient(165deg, #0B2B26 0%, #163832 55%, #2A5C4E 100%);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--gradient);
+    min-height: 100vh;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #fff;
+    padding: 48px 20px 64px;
+  }
+
+  /* Noise texture */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  .page { position: relative; z-index: 1; max-width: 520px; margin: 0 auto; }
+
+  /* ── Profile ── */
+  .profile {
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+    margin-bottom: 32px;
+  }
+  .avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--brand-primary);
+    border: 3px solid var(--brand-light);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .avatar span {
+    font-family: Georgia, serif; font-size: 26px;
+    font-weight: 700; color: var(--brand-light); letter-spacing: -1px;
+  }
+  .profile h1 {
+    font-family: Georgia, serif; font-size: 22px;
+    font-weight: 700; color: #fff; letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+  .profile .handle {
+    font-size: 13px; color: var(--brand-light);
+    font-weight: 600; margin-bottom: 10px;
+  }
+  .profile .bio {
+    font-size: 13px; color: rgba(255,255,255,0.6);
+    line-height: 1.6; max-width: 340px;
+  }
+  .profile .bio strong { color: rgba(255,255,255,0.85); }
+
+  /* Accent dots */
+  .dots {
+    display: flex; gap: 6px; margin-top: 14px;
+    justify-content: center;
+  }
+  .dots span {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--brand-light); opacity: 0.5;
+  }
+  .dots span:nth-child(2) { opacity: 0.8; }
+
+  /* ── Section label ── */
+  .section-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: rgba(255,255,255,0.35);
+    margin-bottom: 10px; margin-top: 28px; padding-left: 2px;
+  }
+
+  /* ── How to use box ── */
+  .how-box {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; padding: 22px 24px;
+    margin-bottom: 10px;
+  }
+  .how-box h2 {
+    font-family: Georgia, serif; font-size: 16px;
+    font-weight: 700; color: #fff; margin-bottom: 4px;
+  }
+  .how-box .subtitle {
+    font-size: 12px; color: rgba(255,255,255,0.45);
+    margin-bottom: 18px; line-height: 1.5;
+  }
+
+  /* Steps */
+  .step {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .step:last-child { border-bottom: none; padding-bottom: 0; }
+  .step-badge {
+    width: 26px; height: 26px; border-radius: 8px;
+    background: var(--brand-primary);
+    border: 1px solid rgba(142,182,155,0.25);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: Georgia, serif; font-size: 13px;
+    font-weight: 700; color: var(--brand-light);
+  }
+  .step-content p {
+    font-size: 13px; color: rgba(255,255,255,0.75);
+    line-height: 1.5; padding-top: 3px;
+  }
+  .step-content strong { color: #fff; }
+  .step-content a {
+    color: var(--brand-light); text-decoration: none;
+    font-weight: 600; border-bottom: 1px solid rgba(142,182,155,0.3);
+  }
+
+  /* Claude note */
+  .claude-note {
+    background: rgba(142,182,155,0.1);
+    border: 1px solid rgba(142,182,155,0.2);
+    border-radius: 12px; padding: 14px 16px;
+    margin-top: 10px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .claude-note .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .claude-note p {
+    font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.55;
+  }
+  .claude-note strong { color: var(--brand-light); }
+
+  /* ── Prompt pack links ── */
+  .link-card {
+    display: flex; align-items: center; gap: 14px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px; padding: 16px 18px;
+    margin-bottom: 10px; cursor: pointer;
+    text-decoration: none; color: inherit;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .link-card:hover {
+    background: rgba(255,255,255,0.11);
+    transform: translateY(-1px);
+  }
+  .link-icon {
+    width: 42px; height: 42px; border-radius: 11px;
+    background: var(--brand-primary);
+    border: 1px solid rgba(142,182,155,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 18px;
+  }
+  .link-text { flex: 1; }
+  .link-text .link-num {
+    font-size: 9px; font-weight: 700; letter-spacing: 1.8px;
+    text-transform: uppercase; color: var(--brand-light);
+    margin-bottom: 2px; display: block;
+  }
+  .link-text .link-title {
+    font-size: 13px; font-weight: 700; color: #fff;
+    line-height: 1.3;
+  }
+  .link-text .link-sub {
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    margin-top: 2px;
+  }
+  .link-arrow {
+    color: rgba(255,255,255,0.3); flex-shrink: 0;
+  }
+
+  /* ── Instagram link ── */
+  .ig-card {
+    display: flex; align-items: center; gap: 14px;
+    background: linear-gradient(135deg, rgba(131,58,180,0.25), rgba(253,29,29,0.15), rgba(252,176,69,0.15));
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px; padding: 16px 18px;
+    margin-bottom: 10px; text-decoration: none; color: inherit;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .ig-card:hover { transform: translateY(-1px); }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center; margin-top: 40px; padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .footer p {
+    font-size: 11px; color: rgba(255,255,255,0.25);
+    line-height: 1.6;
+  }
+  .footer strong { color: rgba(255,255,255,0.4); }
+
+  /* Pill tags */
+  .pill {
+    display: inline-block; padding: 3px 9px;
+    background: rgba(142,182,155,0.15);
+    border: 1px solid rgba(142,182,155,0.25);
+    border-radius: 20px; font-size: 10px; font-weight: 600;
+    color: var(--brand-light); margin: 3px 2px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Profile ── -->
+  <div class="profile">
+    <div class="avatar"><span>VS</span></div>
+    <h1>Verdstack</h1>
+    <p class="handle">@verdstack</p>
+    <p class="bio">
+      <strong>AI productivity for STEM students & builders.</strong><br>
+      Weekly Claude prompts that help you study smarter,<br>plan better, and ship faster.
+    </p>
+    <div style="margin-top:12px;">
+      <span class="pill">Claude AI</span>
+      <span class="pill">STEM Students</span>
+      <span class="pill">Productivity</span>
+      <span class="pill">Free Prompts</span>
+    </div>
+    <div class="dots">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+
+  <!-- ── How to use section ── -->
+  <p class="section-label">How to use these prompts</p>
+
+  <div class="how-box">
+    <h2>New to Claude? Start here 👋</h2>
+    <p class="subtitle">Claude is a free AI assistant made by Anthropic. You don't need to install anything — it runs entirely in your browser. Here's how to use any prompt from this page in 4 steps.</p>
+
+    <div class="step">
+      <div class="step-badge">1</div>
+      <div class="step-content">
+        <p><strong>Go to <a href="https://claude.ai" target="_blank">claude.ai</a></strong> — it's completely free to sign up with your email or Google account. No credit card needed.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-badge">2</div>
+      <div class="step-content">
+        <p><strong>Click "New conversation"</strong> to open a fresh chat with Claude.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-badge">3</div>
+      <div class="step-content">
+        <p><strong>Open any prompt pack below,</strong> copy the prompt you want, and paste it into the Claude chat box. Then fill in the brackets — replace things like <strong>[your course name]</strong> or <strong>[exam date]</strong> with your actual information.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-badge">4</div>
+      <div class="step-content">
+        <p><strong>Hit enter</strong> and Claude will respond with a structured, personalised output. You can follow up with questions or ask it to adjust anything — Claude remembers the full conversation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Claude tip note -->
+  <div class="claude-note">
+    <span class="icon">🌿</span>
+    <p><strong>Tip:</strong> The more detail you give Claude, the better the output. Don't just write "plan my week" — tell it your courses, your hours, your deadlines, and your goals. Specific input = specific, useful plan.</p>
+  </div>
+
+
+  <!-- ── Prompt packs ── -->
+  <p class="section-label">Free prompt packs</p>
+
+  <a href="./verdstack_prompt_pack.html" class="link-card">
+    <div class="link-icon">📅</div>
+    <div class="link-text">
+      <span class="link-num">Post 01</span>
+      <div class="link-title">Plan Your Schedule</div>
+      <div class="link-sub">5 prompts · Weekly planning, daily priorities & review</div>
+    </div>
+    <div class="link-arrow">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </div>
+  </a>
+
+  <a href="./verdstack_prompt_pack.html" class="link-card">
+    <div class="link-icon">📝</div>
+    <div class="link-text">
+      <span class="link-num">Post 02</span>
+      <div class="link-title">Turn Lecture Notes Into a Study Plan</div>
+      <div class="link-sub">5 prompts · Summaries, gap analysis, practice questions</div>
+    </div>
+    <div class="link-arrow">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </div>
+  </a>
+
+  <a href="./verdstack_prompt_pack_3.html" class="link-card">
+    <div class="link-icon">🎓</div>
+    <div class="link-text">
+      <span class="link-num">Post 03</span>
+      <div class="link-title">Plan Your Semester as a STEM Student</div>
+      <div class="link-sub">5 prompts · Course audit, deadlines, danger weeks & master plan</div>
+    </div>
+    <div class="link-arrow">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </div>
+  </a>
+
+  <!-- Coming soon card -->
+  <div class="link-card" style="opacity:0.45;cursor:default;">
+    <div class="link-icon">🔒</div>
+    <div class="link-text">
+      <span class="link-num">Post 04 — Coming soon</span>
+      <div class="link-title">More prompts dropping weekly</div>
+      <div class="link-sub">Follow @verdstack to get them first</div>
+    </div>
+  </div>
+
+
+  <!-- ── Instagram ── -->
+  <p class="section-label">Follow for more</p>
+
+  <a href="https://instagram.com/verdstack" target="_blank" class="ig-card">
+    <div class="link-icon" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);border:none;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    </div>
+    <div class="link-text">
+      <span class="link-num">Instagram</span>
+      <div class="link-title">@verdstack</div>
+      <div class="link-sub">New Claude prompt carousel every week</div>
+    </div>
+    <div class="link-arrow">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </div>
+  </a>
+
+
+  <!-- ── Footer ── -->
+  <div class="footer">
+    <p>
+      Made with Claude AI 🌿<br>
+      <strong>Verdstack</strong> · AI Productivity for STEM Students & Builders
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
