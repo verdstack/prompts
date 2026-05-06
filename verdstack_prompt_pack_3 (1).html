@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verdstack Prompt Pack — Plan Your Semester</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-primary: #163832;
+    --brand-light:   #8EB69B;
+    --brand-dark:    #0B2B26;
+    --light-bg:      #F2F7F4;
+    --light-border:  #DDE8E2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--light-bg); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--brand-dark); }
+
+  .header { background: var(--brand-dark); padding: 40px 48px 36px; display: flex; align-items: center; gap: 14px; }
+  .logo-circle { width: 44px; height: 44px; border-radius: 50%; background: var(--brand-primary); border: 2px solid var(--brand-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .logo-circle span { font-family: Georgia,serif; font-size: 15px; font-weight: 700; color: var(--brand-light); letter-spacing: -0.5px; }
+  .header-text h1 { font-family: Georgia,serif; font-size: 22px; font-weight: 700; color: #DAF1DE; letter-spacing: -0.3px; }
+  .header-text p { font-size: 12px; color: var(--brand-light); margin-top: 3px; }
+
+  .tag-bar { background: var(--brand-primary); padding: 10px 48px; display: flex; align-items: center; gap: 8px; }
+  .tag-bar span { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--brand-light); }
+  .tag-bar .dot { color: rgba(142,182,155,0.4); }
+
+  .content { max-width: 780px; margin: 0 auto; padding: 48px 48px 64px; }
+
+  .intro { background: #fff; border: 1px solid var(--light-border); border-radius: 14px; padding: 24px 28px; margin-bottom: 36px; border-left: 4px solid var(--brand-primary); }
+  .intro p { font-size: 14px; line-height: 1.6; color: rgba(11,43,38,0.7); }
+  .intro strong { color: var(--brand-dark); font-weight: 700; }
+  .intro a { color: var(--brand-primary); font-weight: 600; }
+
+  .prompt-card { background: #fff; border: 1px solid var(--light-border); border-radius: 16px; padding: 28px 32px; margin-bottom: 24px; position: relative; overflow: hidden; }
+  .prompt-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--brand-primary); }
+  .way-badge { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 20px; background: var(--brand-primary); color: var(--brand-light); font-size: 10px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; margin-bottom: 10px; }
+  .prompt-card h3 { font-family: Georgia,serif; font-size: 19px; font-weight: 700; color: var(--brand-dark); margin-bottom: 6px; letter-spacing: -0.3px; line-height: 1.2; }
+  .when-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--brand-light); margin-bottom: 4px; display: block; }
+  .when-text { font-size: 13px; color: rgba(11,43,38,0.6); margin-bottom: 16px; line-height: 1.5; }
+  .prompt-label { font-size: 10px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: rgba(11,43,38,0.45); margin-bottom: 8px; display: block; }
+  .prompt-text { background: var(--light-bg); border: 1px solid var(--light-border); border-radius: 10px; padding: 18px 18px 18px 34px; font-family: Georgia,serif; font-size: 13.5px; font-style: italic; line-height: 1.65; color: var(--brand-dark); margin-bottom: 14px; position: relative; }
+  .prompt-text::before { content: '"'; position: absolute; top: 10px; left: 12px; font-size: 28px; color: var(--brand-light); font-family: Georgia,serif; line-height: 1; opacity: 0.6; }
+  .tip-box { background: rgba(142,182,155,0.1); border: 1px solid rgba(142,182,155,0.25); border-radius: 10px; padding: 12px 14px; display: flex; gap: 8px; align-items: flex-start; }
+  .tip-emoji { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .tip-content strong { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; color: var(--brand-primary); display: block; margin-bottom: 2px; }
+  .tip-content p { font-size: 12px; color: rgba(11,43,38,0.65); line-height: 1.5; }
+
+  .how-to { background: var(--brand-dark); border-radius: 16px; padding: 28px 32px; margin-top: 36px; }
+  .how-to h2 { font-family: Georgia,serif; font-size: 18px; font-weight: 700; color: #DAF1DE; margin-bottom: 20px; }
+  .step { display: flex; align-items: flex-start; gap: 14px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .step:last-child { border-bottom: none; padding-bottom: 0; }
+  .step-num { font-family: Georgia,serif; font-size: 22px; font-weight: 300; color: var(--brand-light); flex-shrink: 0; min-width: 24px; line-height: 1.2; }
+  .step p { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.55; padding-top: 2px; }
+  .step a { color: var(--brand-light); text-decoration: none; font-weight: 600; }
+
+  .footer { text-align: center; padding: 32px 48px 40px; border-top: 1px solid var(--light-border); background: #fff; }
+  .footer-logo { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+  .footer-logo-circle { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-primary); display: flex; align-items: center; justify-content: center; }
+  .footer-logo-circle span { font-family: Georgia,serif; font-size: 10px; font-weight: 700; color: var(--brand-light); }
+  .footer-logo-name { font-size: 12px; font-weight: 700; color: var(--brand-primary); }
+  .footer p { font-size: 12px; color: rgba(11,43,38,0.45); line-height: 1.6; }
+  .footer strong { color: var(--brand-primary); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-circle"><span>VS</span></div>
+  <div class="header-text">
+    <h1>Verdstack Prompt Pack</h1>
+    <p>5 Ways to Plan Your Semester as a STEM Student · @verdstack</p>
+  </div>
+</div>
+
+<div class="tag-bar">
+  <span>Semester Planning</span>
+  <span class="dot">·</span>
+  <span>STEM Students</span>
+  <span class="dot">·</span>
+  <span>Copy-Paste Prompts</span>
+  <span class="dot">·</span>
+  <span>Claude AI</span>
+</div>
+
+<div class="content">
+
+  <div class="intro">
+    <p><strong>How to use this pack:</strong> At the start of each semester, open <a href="https://claude.ai">claude.ai</a> and work through these prompts in order — or jump straight to Way 05 (the master prompt) if you want everything at once. Fill in the brackets with your real courses, dates, and constraints. The more detail you give Claude, the more useful the output.</p>
+  </div>
+
+  <!-- Way 01 -->
+  <div class="prompt-card">
+    <div class="way-badge">Way 01</div>
+    <h3>Course Load Audit</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">You're about to start a semester and want to know if your course combination is manageable — before it's too late to drop a class.</p>
+    <span class="prompt-label">Your prompt</span>
+    <div class="prompt-text">Here are my courses this semester: [list each course + credit hours + brief description of what it covers]. Rate each course by difficulty (1–5), identify which weeks will overlap the most, flag any combinations that are high-risk, and tell me if my total workload is manageable or if I should consider dropping one.</div>
+    <div class="tip-box">
+      <span class="tip-emoji">💡</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>Tell Claude which courses you've already struggled with before — it adjusts the difficulty rating to your personal history, not just the course's general reputation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Way 02 -->
+  <div class="prompt-card">
+    <div class="way-badge">Way 02</div>
+    <h3>Deadline Timeline</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">You want to see every assignment, lab, project, and exam across all courses laid out in one place — so nothing sneaks up on you.</p>
+    <span class="prompt-label">Your prompt</span>
+    <div class="prompt-text">Here are all my deadlines this semester across all courses: [list each item with its date and course name]. Map them week by week from Week 1 to Week 16. Highlight any week with 3 or more overlapping deadlines as a danger week. Then suggest which tasks I should start early to reduce the crunch, and which weeks I'll have breathing room to get ahead.</div>
+    <div class="tip-box">
+      <span class="tip-emoji">💡</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>Ask Claude to format the output as a table — then paste it directly into Notion or Google Sheets for a live tracker you can check off each week.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Way 03 -->
+  <div class="prompt-card">
+    <div class="way-badge">Way 03</div>
+    <h3>Weekly Study Budget</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">You want to stop spreading study time equally across all subjects and start investing your hours where they actually matter most.</p>
+    <span class="prompt-label">Your prompt</span>
+    <div class="prompt-text">My courses this semester are: [list with difficulty level if known]. I have [N] free hours per week for studying outside of class time. My other weekly commitments are: [e.g. part-time work 10hrs, gym 3×, club meetings]. Based on each course's difficulty and upcoming deadlines, give me a weekly study budget — how many hours per subject per week — and adjust it dynamically for my 3 hardest weeks in the semester.</div>
+    <div class="tip-box">
+      <span class="tip-emoji">💡</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>Include your non-study commitments honestly. Claude plans around real life, not ideal conditions — and it will protect the things that matter to your wellbeing too.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Way 04 -->
+  <div class="prompt-card">
+    <div class="way-badge">Way 04</div>
+    <h3>Survival Week Planning</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">You know a brutal week is coming and want a day-by-day battle plan built before it hits — not the night before.</p>
+    <span class="prompt-label">Your prompt</span>
+    <div class="prompt-text">Week [X] is my hardest week this semester. I have: [list every deadline, exam, lab report, and personal commitment that week]. I can study from [start time] to [end time] each day. Build me a day-by-day plan for that entire week — what to focus on each day, in what order, with realistic time blocks, built-in breaks, and a buffer day before the most important deadline.</div>
+    <div class="tip-box">
+      <span class="tip-emoji">💡</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>Run this prompt 2 weeks before the crunch week arrives — not the night before. The earlier you plan, the more Claude can front-load heavy tasks into lighter days before it hits.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Way 05 -->
+  <div class="prompt-card">
+    <div class="way-badge">Way 05</div>
+    <h3>The Master Semester Prompt</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">It's week 1 and you want a complete semester strategy — all five outputs in a single conversation. This is the one to bookmark.</p>
+    <span class="prompt-label">Your prompt — copy everything below</span>
+    <div class="prompt-text">I'm a [year] [major] student. My courses this semester are: [list each course + credit hours]. All deadlines across all courses: [list with dates and course names]. Study hours available: [N hours/day], [which days]. Weekly commitments outside study: [work, gym, clubs, etc.]. My academic goals this semester: [e.g. GPA target, pass certain courses, apply for internships]. Please build me: (1) a course difficulty ranking with a brief reason for each, (2) a week-by-week deadline map with danger weeks flagged, (3) a weekly study budget per subject, (4) a day-by-day survival plan for my top 3 danger weeks, (5) one specific piece of study advice for each course based on its nature.</div>
+    <div class="tip-box">
+      <span class="tip-emoji">💡</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>Save this Claude conversation and return to it weekly. Tell Claude what changed — a new deadline, a dropped module, a week you fell behind — and it updates the plan without starting over.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to use -->
+  <div class="how-to">
+    <h2>How to Use These Prompts</h2>
+    <div class="step">
+      <span class="step-num">01</span>
+      <p>Gather your syllabuses from all courses before you start — the more info you have, the better Claude's output</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02</span>
+      <p>Open <a href="https://claude.ai">claude.ai</a> and start a new conversation — name it "Semester Plan [Term Year]" so you can find it later</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03</span>
+      <p>Start with Way 01 (Course Audit) or go straight to Way 05 (Master Prompt) if you want everything at once</p>
+    </div>
+    <div class="step">
+      <span class="step-num">04</span>
+      <p>Fill in every bracket with your real data — be specific about hours, dates, and difficulty. Vague input = vague plan</p>
+    </div>
+    <div class="step">
+      <span class="step-num">05</span>
+      <p>Return to the same conversation each week and update Claude as things change — it remembers your full context</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-logo">
+    <div class="footer-logo-circle"><span>VS</span></div>
+    <span class="footer-logo-name">Verdstack</span>
+  </div>
+  <p>More free prompt packs every week.<br><strong>Follow @verdstack on Instagram</strong> to get them first.</p>
+</div>
+
+</body>
+</html>
