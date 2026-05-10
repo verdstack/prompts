@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verdstack Prompt Pack — Study Smarter the Night Before Your Exam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-primary: #163832;
+    --brand-light:   #8EB69B;
+    --brand-dark:    #0B2B26;
+    --light-bg:      #F2F7F4;
+    --light-border:  #DDE8E2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--light-bg);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--brand-dark);
+    padding: 0;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--brand-dark);
+    padding: 40px 48px 36px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .logo-circle {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--brand-primary);
+    border: 2px solid var(--brand-light);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-circle span {
+    font-family: Georgia, serif; font-size: 15px;
+    font-weight: 700; color: var(--brand-light); letter-spacing: -0.5px;
+  }
+  .header-text h1 {
+    font-family: Georgia, serif; font-size: 22px;
+    font-weight: 700; color: #DAF1DE; letter-spacing: -0.3px;
+  }
+  .header-text p {
+    font-size: 12px; color: var(--brand-light);
+    margin-top: 3px; letter-spacing: 0.3px;
+  }
+
+  /* ── TAG BAR ── */
+  .tag-bar {
+    background: var(--brand-primary);
+    padding: 10px 48px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tag-bar span {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--brand-light);
+  }
+  .tag-bar .dot { color: rgba(142,182,155,0.4); }
+
+  /* ── CONTENT ── */
+  .content {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 48px 64px;
+  }
+
+  /* ── INTRO ── */
+  .intro {
+    background: #fff;
+    border: 1px solid var(--light-border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 36px;
+    border-left: 4px solid var(--brand-primary);
+  }
+  .intro p {
+    font-size: 14px; line-height: 1.6; color: rgba(11,43,38,0.7);
+  }
+  .intro strong { color: var(--brand-dark); font-weight: 700; }
+
+  /* ── PROMPT CARD ── */
+  .prompt-card {
+    background: #fff;
+    border: 1px solid var(--light-border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .prompt-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--brand-primary);
+  }
+  .way-badge {
+    display: inline-flex; align-items: center;
+    padding: 4px 12px; border-radius: 20px;
+    background: var(--brand-primary); color: var(--brand-light);
+    font-size: 10px; font-weight: 700; letter-spacing: 1.8px;
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  .prompt-card h3 {
+    font-family: Georgia, serif; font-size: 19px;
+    font-weight: 700; color: var(--brand-dark);
+    margin-bottom: 6px; letter-spacing: -0.3px; line-height: 1.2;
+  }
+  .when-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--brand-light);
+    margin-bottom: 4px; display: block;
+  }
+  .when-text {
+    font-size: 13px; color: rgba(11,43,38,0.6); margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .prompt-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.8px;
+    text-transform: uppercase; color: rgba(11,43,38,0.45);
+    margin-bottom: 8px; display: block;
+  }
+  .prompt-text {
+    background: var(--light-bg);
+    border: 1px solid var(--light-border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-family: Georgia, serif; font-size: 13.5px;
+    font-style: italic; line-height: 1.65;
+    color: var(--brand-dark);
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .prompt-text::before {
+    content: '"';
+    position: absolute; top: 10px; left: 12px;
+    font-size: 28px; color: var(--brand-light);
+    font-family: Georgia, serif; line-height: 1; opacity: 0.6;
+  }
+  .prompt-text p { padding-left: 16px; }
+  .tip-box {
+    background: rgba(142,182,155,0.1);
+    border: 1px solid rgba(142,182,155,0.25);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .tip-emoji { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .tip-content strong {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+    color: var(--brand-primary); display: block; margin-bottom: 2px;
+  }
+  .tip-content p {
+    font-size: 12px; color: rgba(11,43,38,0.65); line-height: 1.5;
+  }
+
+  /* ── HOW TO USE ── */
+  .how-to {
+    background: var(--brand-dark);
+    border-radius: 16px; padding: 28px 32px; margin-top: 36px;
+  }
+  .how-to h2 {
+    font-family: Georgia, serif; font-size: 18px; font-weight: 700;
+    color: #DAF1DE; margin-bottom: 20px; letter-spacing: -0.3px;
+  }
+  .step {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .step:last-child { border-bottom: none; padding-bottom: 0; }
+  .step-num {
+    font-family: Georgia, serif; font-size: 22px; font-weight: 300;
+    color: var(--brand-light); flex-shrink: 0; min-width: 24px; line-height: 1.2;
+  }
+  .step p { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.55; padding-top: 2px; }
+  .step a { color: var(--brand-light); text-decoration: none; font-weight: 600; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center; padding: 32px 48px 40px;
+    border-top: 1px solid var(--light-border);
+    background: #fff;
+  }
+  .footer p { font-size: 12px; color: rgba(11,43,38,0.45); line-height: 1.6; }
+  .footer strong { color: var(--brand-primary); }
+  .footer-logo {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; margin-bottom: 10px;
+  }
+  .footer-logo-circle {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--brand-primary);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .footer-logo-circle span {
+    font-family: Georgia, serif; font-size: 10px;
+    font-weight: 700; color: var(--brand-light); letter-spacing: -0.3px;
+  }
+  .footer-logo-name {
+    font-size: 12px; font-weight: 700;
+    color: var(--brand-primary); letter-spacing: 0.3px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-circle"><span>VS</span></div>
+  <div class="header-text">
+    <h1>Verdstack Prompt Pack</h1>
+    <p>5 Ways to Study Smarter the Night Before Your Exam · @verdstack</p>
+  </div>
+</div>
+
+<!-- TAG BAR -->
+<div class="tag-bar">
+  <span>Exam Prep</span>
+  <span class="dot">·</span>
+  <span>Copy-Paste Prompts</span>
+  <span class="dot">·</span>
+  <span>Claude AI</span>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- INTRO -->
+  <div class="intro">
+    <p><strong>How to use this pack:</strong> Copy any prompt below, open <a href="https://claude.ai" style="color:var(--brand-primary);font-weight:600;">claude.ai</a>, paste the prompt, fill in the brackets with your actual content, and hit enter. Claude handles the rest. No setup needed.</p>
+  </div>
+
+  <!-- WAY 01 -->
+  <div class="prompt-card">
+    <div class="way-badge">Way 01</div>
+    <h3>Build a Last-Minute Study Triage</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">You have a few hours left and no idea which topics are actually worth your time.</p>
+    <span class="prompt-label">Your prompt</span>
+    <div class="prompt-text">
+      <p>I have [X hours] before my [subject] exam. Topics covered: [list your topics]. Based on typical exam weighting for this subject, rank these from most to least important and tell me exactly how to split my study time.</p>
+    </div>
+    <div class="tip-box">
+      <span class="tip-emoji">💡</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>Paste your syllabus or a list of past exam topics after the prompt — Claude will prioritize even more accurately based on what actually shows up.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WAY 02 -->
+  <div class="prompt-card">
+    <div class="way-badge">Way 02</div>
+    <h3>Generate a Custom Practice Quiz</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">You want to actively test yourself instead of passively re-reading notes that blur together.</p>
+    <span class="prompt-label">Your prompt</span>
+    <div class="prompt-text">
+      <p>Generate 10 practice exam questions on [topic] at [beginner / intermediate / advanced] level. For each question, give 4 multiple-choice options, mark the correct answer, and explain in 1–2 sentences why it's correct.</p>
+    </div>
+    <div class="tip-box">
+      <span class="tip-emoji">💡</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>After you answer, tell Claude which questions you got wrong — then ask it to generate 10 more focused only on those concepts. Zero in on the gaps fast.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WAY 03 -->
+  <div class="prompt-card">
+    <div class="way-badge">Way 03</div>
+    <h3>Turn Confusion Into a Clear Explanation</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">There's a concept that still doesn't click and you're running out of time to figure it out alone.</p>
+    <span class="prompt-label">Your prompt</span>
+    <div class="prompt-text">
+      <p>I still don't understand [concept] from [subject]. Explain it simply as if I'm a first-year student, then show me a complete worked example from scratch, and finish by telling me the single most important thing to remember about it.</p>
+    </div>
+    <div class="tip-box">
+      <span class="tip-emoji">💡</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>Once the base makes sense, follow up with: "Now go deeper — what are the edge cases or common exam traps with this concept?" Two messages, full understanding.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WAY 04 -->
+  <div class="prompt-card">
+    <div class="way-badge">Way 04</div>
+    <h3>Build Memory Aids for Key Formulas</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">You need to memorize equations, definitions, or lists — and generic repetition isn't cutting it.</p>
+    <span class="prompt-label">Your prompt</span>
+    <div class="prompt-text">
+      <p>I need to memorize [formula / concept / list of definitions] for tomorrow's exam. Create three memory aids: one mnemonic acronym, one analogy to something everyday, and one short story that captures the logic. Make them capture the meaning — not just the letters.</p>
+    </div>
+    <div class="tip-box">
+      <span class="tip-emoji">💡</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>Ask for three versions and pick whichever sticks. A story, an acronym, and an analogy — different hooks work for different minds. Let Claude generate the options.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WAY 05 -->
+  <div class="prompt-card">
+    <div class="way-badge">Way 05</div>
+    <h3>Do a Rapid Brain Dump Review</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">You want to find your real blind spots before the exam does — fast, without guessing.</p>
+    <span class="prompt-label">Your prompt</span>
+    <div class="prompt-text">
+      <p>Here's everything I remember about [topic] — it might be incomplete or wrong: [your brain dump]. Please: (1) identify any factual errors, (2) list the key concepts I'm missing, and (3) rank what I most urgently need to review before tomorrow's exam.</p>
+    </div>
+    <div class="tip-box">
+      <span class="tip-emoji">💡</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>Do this without looking at your notes first. Writing from memory — even badly — is the fastest way to surface what you actually don't know before the exam does.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO USE -->
+  <div class="how-to">
+    <h2>How to Use These Prompts</h2>
+    <div class="step">
+      <span class="step-num">01</span>
+      <p>Open <a href="https://claude.ai">claude.ai</a> and start a new conversation</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02</span>
+      <p>Copy any prompt above and paste it into Claude</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03</span>
+      <p>Fill in the brackets — your subject, topic, hours, and difficulty level</p>
+    </div>
+    <div class="step">
+      <span class="step-num">04</span>
+      <p>Paste your notes or brain dump where indicated — the more detail, the sharper Claude's output</p>
+    </div>
+    <div class="step">
+      <span class="step-num">05</span>
+      <p>Follow up with adjustments — Claude remembers the context and keeps building on it</p>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-logo">
+    <div class="footer-logo-circle"><span>VS</span></div>
+    <span class="footer-logo-name">Verdstack</span>
+  </div>
+  <p>More free prompt packs every week.<br><strong>Follow @verdstack on Instagram</strong> to get them first.</p>
+</div>
+
+</body>
+</html>
