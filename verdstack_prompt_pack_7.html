@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verdstack Prompt Pack — Build an Interactive Study Guide with Claude</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--brand-primary:#163832;--brand-light:#8EB69B;--brand-dark:#0B2B26;--light-bg:#F2F7F4;--light-border:#DDE8E2;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--light-bg);font-family:'Plus Jakarta Sans',sans-serif;color:var(--brand-dark);}
+  .header{background:var(--brand-dark);padding:40px 48px 36px;display:flex;align-items:center;gap:14px;}
+  .logo-circle{width:44px;height:44px;border-radius:50%;background:var(--brand-primary);border:2px solid var(--brand-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .logo-circle span{font-family:Georgia,serif;font-size:15px;font-weight:700;color:var(--brand-light);letter-spacing:-0.5px;}
+  .header-text h1{font-family:Georgia,serif;font-size:22px;font-weight:700;color:#DAF1DE;letter-spacing:-0.3px;}
+  .header-text p{font-size:12px;color:var(--brand-light);margin-top:3px;}
+  .tag-bar{background:var(--brand-primary);padding:10px 48px;display:flex;align-items:center;gap:8px;}
+  .tag-bar span{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--brand-light);}
+  .tag-bar .dot{color:rgba(142,182,155,0.4);}
+  .content{max-width:780px;margin:0 auto;padding:48px 48px 64px;}
+  .intro{background:#fff;border:1px solid var(--light-border);border-radius:14px;padding:24px 28px;margin-bottom:36px;border-left:4px solid var(--brand-primary);}
+  .intro p{font-size:14px;line-height:1.6;color:rgba(11,43,38,0.7);}
+  .intro strong{color:var(--brand-dark);font-weight:700;}
+  .intro a{color:var(--brand-primary);font-weight:600;}
+  .prompt-card{background:#fff;border:1px solid var(--light-border);border-radius:16px;padding:28px 32px;margin-bottom:24px;position:relative;overflow:hidden;}
+  .prompt-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--brand-primary);}
+  .way-badge{display:inline-flex;align-items:center;padding:4px 12px;border-radius:20px;background:var(--brand-primary);color:var(--brand-light);font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:10px;}
+  .prompt-card h3{font-family:Georgia,serif;font-size:19px;font-weight:700;color:var(--brand-dark);margin-bottom:6px;letter-spacing:-0.3px;line-height:1.2;}
+  .when-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--brand-light);margin-bottom:4px;display:block;}
+  .when-text{font-size:13px;color:rgba(11,43,38,0.6);margin-bottom:16px;line-height:1.5;}
+  .prompt-label{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(11,43,38,0.45);margin-bottom:8px;display:block;}
+  .prompt-text{background:var(--light-bg);border:1px solid var(--light-border);border-radius:10px;padding:18px 18px 18px 34px;font-family:Georgia,serif;font-size:13.5px;font-style:italic;line-height:1.65;color:var(--brand-dark);margin-bottom:14px;position:relative;}
+  .prompt-text::before{content:'"';position:absolute;top:10px;left:12px;font-size:28px;color:var(--brand-light);font-family:Georgia,serif;line-height:1;opacity:0.6;}
+  .tip-box{background:rgba(142,182,155,0.1);border:1px solid rgba(142,182,155,0.25);border-radius:10px;padding:12px 14px;display:flex;gap:8px;align-items:flex-start;}
+  .tip-emoji{font-size:14px;flex-shrink:0;margin-top:1px;}
+  .tip-content strong{font-size:11px;font-weight:700;letter-spacing:0.5px;color:var(--brand-primary);display:block;margin-bottom:2px;}
+  .tip-content p{font-size:12px;color:rgba(11,43,38,0.65);line-height:1.5;}
+  .code-block{background:var(--brand-dark);border-radius:10px;padding:16px 20px;margin-bottom:14px;font-family:'Courier New',monospace;font-size:13px;color:#8EB69B;line-height:1.7;}
+  .code-block span{color:rgba(255,255,255,0.45);font-size:11px;display:block;margin-bottom:6px;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:1px;text-transform:uppercase;}
+  .variation-card{background:var(--light-bg);border:1px solid var(--light-border);border-radius:12px;padding:18px 20px;margin-bottom:12px;}
+  .variation-card:last-child{margin-bottom:0;}
+  .variation-label{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--brand-light);margin-bottom:6px;display:block;}
+  .variation-card p{font-family:Georgia,serif;font-size:13px;font-style:italic;line-height:1.6;color:var(--brand-dark);}
+  .how-to{background:var(--brand-dark);border-radius:16px;padding:28px 32px;margin-top:36px;}
+  .how-to h2{font-family:Georgia,serif;font-size:18px;font-weight:700;color:#DAF1DE;margin-bottom:20px;}
+  .step{display:flex;align-items:flex-start;gap:14px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);}
+  .step:last-child{border-bottom:none;padding-bottom:0;}
+  .step-num{font-family:Georgia,serif;font-size:22px;font-weight:300;color:var(--brand-light);flex-shrink:0;min-width:24px;line-height:1.2;}
+  .step p{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.55;padding-top:2px;}
+  .step a{color:var(--brand-light);text-decoration:none;font-weight:600;}
+  .footer{text-align:center;padding:32px 48px 40px;border-top:1px solid var(--light-border);background:#fff;}
+  .footer-logo{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;}
+  .footer-logo-circle{width:28px;height:28px;border-radius:50%;background:var(--brand-primary);display:flex;align-items:center;justify-content:center;}
+  .footer-logo-circle span{font-family:Georgia,serif;font-size:10px;font-weight:700;color:var(--brand-light);}
+  .footer-logo-name{font-size:12px;font-weight:700;color:var(--brand-primary);}
+  .footer p{font-size:12px;color:rgba(11,43,38,0.45);line-height:1.6;}
+  .footer strong{color:var(--brand-primary);}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-circle"><span>VS</span></div>
+  <div class="header-text">
+    <h1>Verdstack Prompt Pack</h1>
+    <p>Build an Interactive Study Guide with Claude &middot; @verdstack</p>
+  </div>
+</div>
+<div class="tag-bar">
+  <span>Study Tools</span><span class="dot">&middot;</span>
+  <span>STEM Students</span><span class="dot">&middot;</span>
+  <span>Copy-Paste Prompts</span><span class="dot">&middot;</span>
+  <span>Claude AI</span>
+</div>
+
+<div class="content">
+  <div class="intro">
+    <p><strong>How to use this pack:</strong> Open <a href="https://claude.ai">claude.ai</a> &mdash; free, no install needed. Work through Steps 01&ndash;04 in order. By the end you'll have a real interactive webpage built from your own notes that runs in any browser. No coding knowledge required &mdash; Claude writes every line.</p>
+  </div>
+
+  <!-- STEP 01 -->
+  <div class="prompt-card">
+    <div class="way-badge">Step 01</div>
+    <h3>Dump Your Material Into Claude</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">You have lecture notes, a textbook chapter, or a list of topics you need to cover. Raw and messy is fine — Claude will organize it.</p>
+    <span class="prompt-label">Your prompt</span>
+    <div class="prompt-text">Here are my notes for [subject / topic]: [paste everything — bullet points, paragraphs, formulas, whatever you have]. Read through all of it before doing anything. I'm going to give you instructions next.</div>
+    <div class="tip-box">
+      <span class="tip-emoji">&#128161;</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>Include your syllabus or a list of past exam topics alongside your notes. Claude will use that to decide what to emphasize — so the study guide is weighted toward what your professor actually tests.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 02 -->
+  <div class="prompt-card">
+    <div class="way-badge">Step 02</div>
+    <h3>Ask Claude to Build the Interactive Page</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">Claude has read your material and you're ready to tell it exactly what kind of interactive tool to build from it.</p>
+    <span class="prompt-label">Your prompt</span>
+    <div class="prompt-text">Now turn those notes into a single interactive HTML study guide. Include: collapsible sections per topic, a 5-question self-quiz at the end with hidden answers that reveal on click, key terms highlighted in green, and a clean readable layout. No external libraries — self-contained file only. Output the full HTML.</div>
+    <div class="tip-box">
+      <span class="tip-emoji">&#128161;</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>"Self-contained file only" means it works offline with no internet. This matters — you want your study guide available at 2am before an exam, not dependent on a CDN that might be slow.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 03 -->
+  <div class="prompt-card">
+    <div class="way-badge">Step 03</div>
+    <h3>Save It and Open in Your Browser</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">Claude has output the full HTML code and you need to turn it into an actual file you can open and use.</p>
+    <span class="prompt-label">How to save it</span>
+    <div class="code-block">
+      <span>3 steps — no coding needed</span>
+      1. Copy everything Claude outputs (Ctrl+A, Ctrl+C)<br>
+      2. Open Notepad (Windows) or TextEdit (Mac)<br>
+      &nbsp;&nbsp;&nbsp;→ On Mac: Format → Make Plain Text first<br>
+      3. Paste → Save As "studyguide.html"<br>
+      4. Double-click the file → opens in Chrome ✓
+    </div>
+    <div class="tip-box">
+      <span class="tip-emoji">&#128161;</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>If anything looks wrong — layout broken, quiz not working — go back to Claude and say exactly what's off. "The quiz answers are visible by default, make them hidden until clicked." Claude will fix and re-output the full file.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 04 -->
+  <div class="prompt-card">
+    <div class="way-badge">Step 04</div>
+    <h3>Keep Updating It All Semester</h3>
+    <span class="when-label">Use this when</span>
+    <p class="when-text">You've covered new material in lectures and want to add it to the existing guide so it grows with the course.</p>
+    <span class="prompt-label">Your prompt</span>
+    <div class="prompt-text">Here is my existing study guide HTML: [paste the full file contents]. Here are my new notes from this week: [paste new lecture notes]. Add a new collapsible section for this week's content — same style as the existing sections. Keep everything else exactly as it is. Output the full updated HTML.</div>
+    <div class="tip-box">
+      <span class="tip-emoji">&#128161;</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>Do this the same evening as each lecture while the material is still fresh. It takes 10 minutes per week. By finals week your study guide already exists — you're reviewing, not building from scratch under pressure.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BONUS VARIATIONS -->
+  <div class="prompt-card">
+    <div class="way-badge">Bonus</div>
+    <h3>3 Variations to Build Instead</h3>
+    <span class="when-label">Use these when</span>
+    <p class="when-text">You want a different kind of tool from the same material. Same process as Step 02 — just swap the output type.</p>
+    <span class="prompt-label">Choose your format</span>
+
+    <div class="variation-card">
+      <span class="variation-label">Variation 1 — Learning Roadmap</span>
+      <p>Turn these topics into a visual learning roadmap HTML page. Show which concepts I need to understand before others, with arrows between them and a color scale from beginner to advanced.</p>
+    </div>
+
+    <div class="variation-card">
+      <span class="variation-label">Variation 2 — Exam Checklist</span>
+      <p>Build me an interactive exam-day checklist HTML page with a checkbox for every concept, formula, and method I need to know. Group them by topic. Let me check things off as I review them.</p>
+    </div>
+
+    <div class="variation-card">
+      <span class="variation-label">Variation 3 — Flashcard Deck</span>
+      <p>Turn these notes into a clickable flashcard HTML page. Term or question on the front, answer or definition on the back. Flip on click. One card at a time with next and previous buttons.</p>
+    </div>
+
+    <div class="tip-box" style="margin-top:16px;">
+      <span class="tip-emoji">&#128161;</span>
+      <div class="tip-content">
+        <strong>Pro tip</strong>
+        <p>Use the flashcard deck in the week before an exam and the full study guide in the weeks leading up to it. Different tools serve different phases of studying.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO USE -->
+  <div class="how-to">
+    <h2>The Rules for Getting This Right</h2>
+    <div class="step">
+      <span class="step-num">01</span>
+      <p><strong style="color:#fff;">Do Steps 01 and 02 in the same conversation.</strong> Claude needs to have read your notes in the same session before it can build from them well.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02</span>
+      <p>Be specific in Step 02 about what you want. "Collapsible sections," "hidden quiz answers," "key terms in green" — the more detail, the less fixing you'll need to do after.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03</span>
+      <p>Open <a href="https://claude.ai">claude.ai</a> on a laptop or desktop for this — not mobile. You need to be able to copy the HTML output and save it as a file.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">04</span>
+      <p><strong style="color:#fff;">Update the guide after every lecture.</strong> One week skipped becomes two. Two becomes the whole semester. Do it the same night — 10 minutes while it's fresh.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">05</span>
+      <p>Before each exam, ask Claude to add a "Common Mistakes" section at the end: "Add a final section listing the 5 most common mistakes students make on [topic] exams and how to avoid each one."</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-logo">
+    <div class="footer-logo-circle"><span>VS</span></div>
+    <span class="footer-logo-name">Verdstack</span>
+  </div>
+  <p>More free prompt packs every week.<br><strong>Follow @verdstack on Instagram</strong> to get them first.</p>
+</div>
+
+</body>
+</html>
